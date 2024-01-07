@@ -7,6 +7,24 @@ const storeReducer = (stateFromArgs: StoreState | undefined, action: StoreAction
     const state = stateFromArgs ?? storeDefaultState
 
     switch (action.type) {
+    case StoreActionType.SET_FIREBASE_AUTH_EMAIL_ADRESS_WAITING: {
+        const current = storeSelectFirebaseAuthEmailAdressWaiting(state)
+
+        if (current === action.payload) {
+            return state
+        }
+
+        return {
+            ...state,
+            firebase: {
+                ...state.firebase,
+                auth: {
+                    ...state.firebase.auth,
+                    emailAdressWaiting: action.payload,
+                },
+            },
+        }
+    }
     case StoreActionType.LOAD_DATA_FROM_LOCAL_STORAGE: {
         const current = storeSelectFirebaseAuthEmailAdressWaiting(state)
 

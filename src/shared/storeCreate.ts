@@ -1,11 +1,16 @@
-import { createStore } from 'redux'
+import { applyMiddleware, createStore, type Store as ReduxStore } from 'redux'
 import storeReducer from './storeReducer'
 import { BrowserLocalStorageKeys } from './browserLocalStorageKeys'
-import { StoreActionType } from './storeAction'
+import { StoreAction, StoreActionType } from './storeAction'
+import { StoreState } from './storeState'
+import storeMiddlewareLocalStorage from './storeMiddlewareLocalStorage'
 
 const stateStoreCreate = () => {
-    const store = createStore(
+    const store: ReduxStore<StoreState, StoreAction> = createStore(
         storeReducer,
+        applyMiddleware(
+            storeMiddlewareLocalStorage,
+        ),
     )
 
     const firebaseEmailWaitingVerification = window.localStorage.getItem(BrowserLocalStorageKeys.FIREBASE_EMAIL_WAITING_TO_BE_VERIFIED)

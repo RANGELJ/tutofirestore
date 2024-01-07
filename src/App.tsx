@@ -1,55 +1,54 @@
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink } from 'firebase/auth'
+import { getAuth, sendSignInLinkToEmail } from 'firebase/auth'
 import firebaseGetApp from './shared/firebaseGetApp'
-import { BrowserLocalStorageKeys } from './shared/browserLocalStorageKeys'
 import { useSelector } from 'react-redux'
+import AuthForm from './components/AuthForm'
 import storeSelectFirebaseAuthEmailAdressWaiting from './shared/storeSelectFirebaseAuthEmailAdressWaiting'
+import useDispatch from './hooks/useDispatch'
+import { StoreActionType } from './shared/storeAction'
+import { useState } from 'react'
 
 const App = () => {
-  const emailAdress = 'georgeranpe@gmail.com'
-  const firebaseAuth = getAuth(firebaseGetApp())
+  const [emailAdress, setEmailAdress] = useState('georgeranpe@gmail.com')
   const firebaseEmailWaiting = useSelector(storeSelectFirebaseAuthEmailAdressWaiting)
-
-  console.log('firebaseEmailWaiting', firebaseEmailWaiting)
-  console.log('hasAuthDataOnUrl', isSignInWithEmailLink(firebaseAuth, window.location.href))
+  const dispatch = useDispatch()
 
   return (
-    <div>
-      {firebaseEmailWaiting && (
-        <div>
-          <p>Waiting for email verification</p>
-          <p>Please check your Inbox</p>
-          <p>{firebaseEmailWaiting}</p>
-        </div>
-      )}
-      <button
-        type="button"
-        disabled={firebaseEmailWaiting !== null}
-        onClick={() => {
-          sendSignInLinkToEmail(firebaseAuth, emailAdress, {
-            url: `${window.location.protocol}//${window.location.host}`,
-            handleCodeInApp: true,
+    <AuthForm
+      title={firebaseEmailWaiting ? 'Waiting for email verification' : 'Welcome'}
+      autoFocus={!firebaseEmailWaiting}
+      emailAdress={emailAdress}
+      instructions={firebaseEmailWaiting
+          ? 'Please check your invoice'
+          : 'Please enter your email adress and then click on the button to send a verification email'}
+      resetIsDisabled={firebaseEmailWaiting === null}
+      sendIsDisabled={firebaseEmailWaiting !== null}
+      onChangeEmailAdress={setEmailAdress}
+      onReset={() => {
+        dispatch({
+          type: StoreActionType.SET_FIREBASE_AUTH_EMAIL_ADRESS_WAITING,
+          payload: null,
+        })
+      }}
+      onSend={() => {
+        const firebaseAuth = getAuth(firebaseGetApp())
+        sendSignInLinkToEmail(firebaseAuth, emailAdress, {
+          url: `${window.location.protocol}//${window.location.host}`,
+          handleCodeInApp: true,
+        })
+          .then(() => {
+            dispatch({
+              type: StoreActionType.SET_FIREBASE_AUTH_EMAIL_ADRESS_WAITING,
+              payload: emailAdress,
+            })
           })
-            .then(() => {
-              window.localStorage.setItem(BrowserLocalStorageKeys.FIREBASE_EMAIL_WAITING_TO_BE_VERIFIED, emailAdress)
-              console.log('Done!')
+          .catch(() => {
+            dispatch({
+              type: StoreActionType.SET_FIREBASE_AUTH_EMAIL_ADRESS_WAITING,
+              payload: null,
             })
-            .catch(() => {
-              console.log('Error!')
-            })
-        }}
-      >
-        Send email
-      </button>
-      <button
-        type="reset"
-        disabled={firebaseEmailWaiting === null}
-        onClick={() => {
-          window.localStorage.removeItem(BrowserLocalStorageKeys.FIREBASE_EMAIL_WAITING_TO_BE_VERIFIED)
-        }}
-      >
-        Reset
-      </button>
-    </div>
+          })
+      }}
+    />
   )
 }
 
