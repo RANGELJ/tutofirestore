@@ -8,6 +8,7 @@ import { StoreActionType } from './shared/storeAction'
 import { useState } from 'react'
 
 const App = () => {
+  const [sendingEmail, setSendingEmail] = useState(false)
   const [emailAdress, setEmailAdress] = useState('georgeranpe@gmail.com')
   const firebaseEmailWaiting = useSelector(storeSelectFirebaseAuthEmailAdressWaiting)
   const dispatch = useDispatch()
@@ -20,8 +21,8 @@ const App = () => {
       instructions={firebaseEmailWaiting
           ? 'Please check your invoice'
           : 'Please enter your email adress and then click on the button to send a verification email'}
-      resetIsDisabled={firebaseEmailWaiting === null}
-      sendIsDisabled={firebaseEmailWaiting !== null}
+      resetIsDisabled={firebaseEmailWaiting === null || sendingEmail}
+      sendIsDisabled={firebaseEmailWaiting !== null || sendingEmail}
       onChangeEmailAdress={setEmailAdress}
       onReset={() => {
         dispatch({
@@ -31,10 +32,14 @@ const App = () => {
       }}
       onSend={() => {
         const firebaseAuth = getAuth(firebaseGetApp())
+        setSendingEmail(true)
         sendSignInLinkToEmail(firebaseAuth, emailAdress, {
           url: `${window.location.protocol}//${window.location.host}`,
           handleCodeInApp: true,
         })
+          .finally(() => {
+            setSendingEmail(false)
+          })
           .then(() => {
             dispatch({
               type: StoreActionType.SET_FIREBASE_AUTH_EMAIL_ADRESS_WAITING,
