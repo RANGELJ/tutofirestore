@@ -17,11 +17,15 @@
     "@mui/material": "^5.15.3",
     "firebase": "^10.7.1",
     "install": "^0.13.0",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.3",
     "npm": "^10.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",
-    "redux": "^5.0.1"
+    "react-router-dom": "^6.21.3",
+    "redux": "^5.0.1",
+    "sort-by": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

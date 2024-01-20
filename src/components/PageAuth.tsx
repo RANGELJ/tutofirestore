@@ -1,13 +1,13 @@
 import { getAuth, sendSignInLinkToEmail } from 'firebase/auth'
-import firebaseGetApp from './shared/firebaseGetApp'
+import firebaseGetApp from '../shared/firebaseGetApp'
 import { useSelector } from 'react-redux'
-import AuthForm from './components/AuthForm'
-import storeSelectFirebaseAuthEmailAdressWaiting from './shared/storeSelectFirebaseAuthEmailAdressWaiting'
-import useDispatch from './hooks/useDispatch'
-import { StoreActionType } from './shared/storeAction'
+import AuthForm from '../components/AuthForm'
+import storeSelectFirebaseAuthEmailAdressWaiting from '../shared/storeSelectFirebaseAuthEmailAdressWaiting'
+import useDispatch from '../hooks/useDispatch'
+import { StoreActionType } from '../shared/storeAction'
 import { useState } from 'react'
 
-const App = () => {
+export const Component = () => {
   const [sendingEmail, setSendingEmail] = useState(false)
   const [emailAdress, setEmailAdress] = useState('georgeranpe@gmail.com')
   const firebaseEmailWaiting = useSelector(storeSelectFirebaseAuthEmailAdressWaiting)
@@ -56,5 +56,3 @@ const App = () => {
     />
   )
 }
-
-export default App

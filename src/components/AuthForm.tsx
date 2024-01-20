@@ -16,6 +16,9 @@ const Container = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     gridTemplateColumns: '1fr 2fr 1fr',
   },
+  [theme.breakpoints.up('lg')]: {
+    gridTemplateColumns: '3fr 4fr 3fr',
+  },
   gridTemplateRows: '1fr 3fr 1fr',
 }))
 
