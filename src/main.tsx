@@ -7,18 +7,11 @@ import { createTheme } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { blueGrey, grey, lightBlue, teal } from '@mui/material/colors'
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
   RouterProvider,
 } from 'react-router-dom'
+import appCreateRouter from './shared/appCreateRouter.tsx'
 
-const router = createBrowserRouter(createRoutesFromElements(
-  <Route
-    path="/"
-    lazy={() => import('./components/PageAuth.tsx')}
-  />
-))
+const router = appCreateRouter()
 
 const theme = createTheme({
   palette: {

@@ -34,7 +34,7 @@ export const Component = () => {
         const firebaseAuth = getAuth(firebaseGetApp())
         setSendingEmail(true)
         sendSignInLinkToEmail(firebaseAuth, emailAdress, {
-          url: `${window.location.protocol}//${window.location.host}`,
+          url: `${window.location.protocol}//${window.location.host}/auth`,
           handleCodeInApp: true,
         })
           .finally(() => {
