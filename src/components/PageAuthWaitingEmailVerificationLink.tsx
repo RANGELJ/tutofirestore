@@ -2,13 +2,13 @@
 import AuthForm from '../components/AuthForm'
 import {
   type ActionFunction,
-  Form,
   redirect,
   useLoaderData,
 } from 'react-router-dom'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
 import routerGetPaths from '../shared/routerGetPaths'
 import localStorageRemoveFirebaseEmailWaitingToBeVerified from '../shared/localStorageRemoveFirebaseEmailWaitingToBeVerified'
+import RouteForm from './RouteForm'
 
 type LoaderData = string
 
@@ -29,7 +29,7 @@ export const Component = () => {
   const firebaseEmailWaiting = useLoaderData() as LoaderData
 
   return (
-    <Form method="POST">
+    <RouteForm method="POST">
       <AuthForm
         actionnName="Reset"
         title="Waiting for email verification"
@@ -39,6 +39,6 @@ export const Component = () => {
         actionIsDisabled={false}
         inputIsDisabled
       />
-    </Form>
+    </RouteForm>
   )
 }

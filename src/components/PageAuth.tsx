@@ -1,16 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import AuthForm from '../components/AuthForm'
-import { ActionFunction, Form, LoaderFunction, redirect, useLoaderData, useRouteError } from 'react-router-dom'
+import { ActionFunction, LoaderFunction, redirect, useLoaderData, useRouteError } from 'react-router-dom'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
 import routerGetPaths from '../shared/routerGetPaths'
 import { sendSignInLinkToEmail } from 'firebase/auth'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
-import { styled } from '@mui/material'
-
-const AuthFormWrapper = styled(Form)({
-  width: '100%',
-  height: '100%',
-})
+import RouteForm from './RouteForm'
 
 type LoaderData = string | null
 
@@ -45,7 +40,7 @@ export const Component = () => {
   const firebaseEmailWaiting = useLoaderData() as LoaderData
 
   return (
-    <AuthFormWrapper method="POST">
+    <RouteForm method="POST">
       <AuthForm
         title="Welcome"
         autoFocus={!firebaseEmailWaiting}
@@ -55,7 +50,7 @@ export const Component = () => {
         initialEmailAddress=""
         inputIsDisabled={false}
       />
-    </AuthFormWrapper>
+    </RouteForm>
   )
 }
 
