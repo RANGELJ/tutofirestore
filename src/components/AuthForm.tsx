@@ -1,11 +1,11 @@
-import Box from '@mui/material/Box'
+import FormControl from '@mui/material/FormControl'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material'
 
-const Container = styled(Box)(({ theme }) => ({
+const Container = styled(FormControl)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   width: '100%',
   height: '100%',
@@ -19,7 +19,7 @@ const Container = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     gridTemplateColumns: '3fr 4fr 3fr',
   },
-  gridTemplateRows: '1fr 3fr 1fr',
+  gridTemplateRows: '2fr 3fr 2fr',
 }))
 
 const FormCard = styled(Paper)(({ theme }) => {
@@ -54,33 +54,24 @@ const ResetButton = styled(Button)({
   gridRow: '5 / 6',
 })
 
-const SendButton = styled(Button)({
-  gridColumn: '5 / 6',
-  gridRow: '5 / 6',
-})
-
 type Props = {
   title: string;
   autoFocus: boolean;
-  emailAdress: string;
+  initialEmailAddress: string;
   instructions: string;
-  resetIsDisabled: boolean;
-  sendIsDisabled: boolean;
-  onChangeEmailAdress: (emailAdress: string) => void;
-  onReset: () => void;
-  onSend: () => void;
+  actionnName: string;
+  inputIsDisabled: boolean;
+  actionIsDisabled: boolean;
 }
 
 const AuthForm = ({
   title,
   autoFocus,
-  emailAdress,
+  initialEmailAddress,
   instructions,
-  resetIsDisabled,
-  sendIsDisabled,
-  onChangeEmailAdress,
-  onReset,
-  onSend,
+  actionnName,
+  inputIsDisabled,
+  actionIsDisabled,
 }: Props) => (
   <Container>
     <FormCard>
@@ -91,28 +82,20 @@ const AuthForm = ({
       <EmailField
         label="Email"
         type="email"
+        InputProps={{
+          name: 'email',
+        }}
         autoFocus={autoFocus}
         fullWidth
-        disabled={sendIsDisabled}
-        value={emailAdress}
-        onChange={(event) => {
-          onChangeEmailAdress(event.target.value)
-        }}
+        disabled={inputIsDisabled}
+        defaultValue={initialEmailAddress}
       />
       <ResetButton
-        type="reset"
-        disabled={resetIsDisabled}
-        onClick={onReset}
+        type="submit"
+        disabled={actionIsDisabled}
       >
-        Reset
+        {actionnName}
       </ResetButton>
-      <SendButton
-        type="button"
-        disabled={sendIsDisabled}
-        onClick={onSend}
-      >
-        Send email
-      </SendButton>
     </FormCard>
   </Container>
 )

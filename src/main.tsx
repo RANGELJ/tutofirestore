@@ -9,9 +9,9 @@ import { blueGrey, grey, lightBlue, teal } from '@mui/material/colors'
 import {
   RouterProvider,
 } from 'react-router-dom'
-import appCreateRouter from './shared/appCreateRouter.tsx'
+import routerCreate from './shared/routerCreate'
 
-const router = appCreateRouter()
+const router = routerCreate()
 
 const theme = createTheme({
   palette: {
