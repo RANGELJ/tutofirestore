@@ -1,13 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import AuthForm from '../components/AuthForm'
 import {
-    type ActionFunction,
-    Form,
-    redirect,
-    useLoaderData,
+  type ActionFunction,
+  Form,
+  redirect,
+  useLoaderData,
 } from 'react-router-dom'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
 import routerGetPaths from '../shared/routerGetPaths'
+import localStorageRemoveFirebaseEmailWaitingToBeVerified from '../shared/localStorageRemoveFirebaseEmailWaitingToBeVerified'
 
 type LoaderData = string
 
@@ -20,8 +21,8 @@ export const loader = async (): Promise<LoaderData | Response> => {
 }
 
 export const action: ActionFunction = async () => {
-    console.log('action matched')
-    return redirect(routerGetPaths().auth)
+  localStorageRemoveFirebaseEmailWaitingToBeVerified()
+  return redirect(routerGetPaths().auth)
 }
 
 export const Component = () => {

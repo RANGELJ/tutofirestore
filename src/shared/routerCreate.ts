@@ -5,7 +5,7 @@ const routerCreate = () => {
   const paths = routerGetPaths()
   return createBrowserRouter([
     {
-      path: '/',
+      path: paths.home,
       lazy: () => import('../components/PageHome.tsx'),
     },
     {

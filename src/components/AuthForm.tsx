@@ -28,7 +28,7 @@ const FormCard = styled(Paper)(({ theme }) => {
     gridColumn: '2 / 3',
     gridRow: '2 / 3',
     display: 'grid',
-    gridTemplateColumns: `${gap} 1fr 3fr ${gap} 3fr 1fr ${gap}`,
+    gridTemplateColumns: `${gap} 1fr 3fr 1fr ${gap}`,
     gridTemplateRows: `${gap} 1fr 4fr 3fr auto ${gap}`,
   }
 })
@@ -49,7 +49,7 @@ const EmailField = styled(TextField)({
   gridRow: '4 / 5',
 })
 
-const ResetButton = styled(Button)({
+const SubmitButton = styled(Button)({
   gridColumn: '3 / 4',
   gridRow: '5 / 6',
 })
@@ -90,12 +90,12 @@ const AuthForm = ({
         disabled={inputIsDisabled}
         defaultValue={initialEmailAddress}
       />
-      <ResetButton
+      <SubmitButton
         type="submit"
         disabled={actionIsDisabled}
       >
         {actionnName}
-      </ResetButton>
+      </SubmitButton>
     </FormCard>
   </Container>
 )
