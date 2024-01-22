@@ -1,11 +1,13 @@
 import FormControl from '@mui/material/FormControl'
 import Paper from '@mui/material/Paper'
+import Box from '@mui/material/Box'
+import Alert, { type AlertColor } from '@mui/material/Alert'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material'
 
-const Container = styled(FormControl)(({ theme }) => ({
+const Frame = styled(FormControl)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   width: '100%',
   height: '100%',
@@ -22,14 +24,14 @@ const Container = styled(FormControl)(({ theme }) => ({
   gridTemplateRows: '2fr 3fr 2fr',
 }))
 
-const FormCard = styled(Paper)(({ theme }) => {
+const ContainerPaper = styled(Paper)(({ theme }) => {
   const gap = theme.spacing(2)
   return {
     gridColumn: '2 / 3',
     gridRow: '2 / 3',
     display: 'grid',
     gridTemplateColumns: `${gap} 1fr 3fr 1fr ${gap}`,
-    gridTemplateRows: `${gap} 1fr 4fr 3fr auto ${gap}`,
+    gridTemplateRows: `1fr auto ${gap} auto ${gap} auto 1fr auto 1fr`,
   }
 })
 
@@ -38,25 +40,27 @@ const Title = styled(Typography)({
   gridRow: '2 / 3',
 })
 
-const Instructions = styled(Typography)({
+const InstructionsBox = styled(Box)({
   fontSize: 14,
   gridColumn: '2 / -2',
-  gridRow: '3 / 4',
+  gridRow: '4 / 5',
+  display: 'flex',
+  justifyContent: 'center',
 })
 
 const EmailField = styled(TextField)({
   gridColumn: '2 / -2',
-  gridRow: '4 / 5',
+  gridRow: '6 / 7',
 })
 
 const SubmitButton = styled(Button)({
   gridColumn: '3 / 4',
-  gridRow: '5 / 6',
+  gridRow: '-3 / -2',
 })
 
 type Props = {
+  severity: AlertColor;
   title: string;
-  autoFocus: boolean;
   initialEmailAddress: string;
   instructions: string;
   actionnName: string;
@@ -65,27 +69,28 @@ type Props = {
 }
 
 const AuthForm = ({
+  severity,
   title,
-  autoFocus,
   initialEmailAddress,
   instructions,
   actionnName,
   inputIsDisabled,
   actionIsDisabled,
 }: Props) => (
-  <Container>
-    <FormCard>
+  <Frame>
+    <ContainerPaper>
       <Title variant="h5">{title}</Title>
-      <Instructions color="text.secondary">
-        {instructions}
-      </Instructions>
+      <InstructionsBox>
+        <Alert severity={severity} about=''>
+          {instructions}
+        </Alert>
+      </InstructionsBox>
       <EmailField
         label="Email"
         type="email"
         InputProps={{
           name: 'email',
         }}
-        autoFocus={autoFocus}
         fullWidth
         disabled={inputIsDisabled}
         defaultValue={initialEmailAddress}
@@ -96,8 +101,8 @@ const AuthForm = ({
       >
         {actionnName}
       </SubmitButton>
-    </FormCard>
-  </Container>
+    </ContainerPaper>
+  </Frame>
 )
 
 export default AuthForm

@@ -31,9 +31,9 @@ export const Component = () => {
   return (
     <RouteForm method="POST">
       <AuthForm
+        severity="info"
         actionnName="Reset"
         title="Waiting for email verification"
-        autoFocus={false}
         initialEmailAddress={firebaseEmailWaiting}
         instructions="Please check your invoice"
         actionIsDisabled={false}

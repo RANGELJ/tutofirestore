@@ -21,4 +21,3 @@ export const loader = async () => {
 }
 
 export const Component = () => null
-

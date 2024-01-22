@@ -5,8 +5,8 @@ const routerCreate = () => {
   const paths = routerGetPaths()
   return createBrowserRouter([
     {
-      path: paths.home,
-      lazy: () => import('../components/PageHome.tsx'),
+      path: paths.root,
+      lazy: () => import('../components/PageRoot.tsx'),
     },
     {
       path: paths.auth,
