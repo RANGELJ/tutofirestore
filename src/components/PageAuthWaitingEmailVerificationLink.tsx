@@ -28,7 +28,7 @@ export const action: ActionFunction = async () => {
 
 export const Component = () => {
   const firebaseEmailWaiting = useLoaderData() as LoaderData
-  const submitting = useNavigationIsSubmitting()
+  const isSubmitting = useNavigationIsSubmitting()
 
   return (
     <RouteForm method="POST">
@@ -38,7 +38,7 @@ export const Component = () => {
         title="Waiting for email verification"
         initialEmailAddress={firebaseEmailWaiting}
         instructions="Please check your invoice"
-        actionIsDisabled={submitting}
+        actionIsDisabled={isSubmitting}
         inputIsDisabled
       />
     </RouteForm>

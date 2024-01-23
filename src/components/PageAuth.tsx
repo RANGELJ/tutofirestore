@@ -41,7 +41,7 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export const Component = () => {
-  const submitting = useNavigationIsSubmitting()
+  const isSubmitting = useNavigationIsSubmitting()
 
   return (
     <RouteForm method="POST">
@@ -49,10 +49,10 @@ export const Component = () => {
         severity="info"
         title="Welcome"
         instructions="Please enter your email adress and then click on the button so we can send you a verification email."
-        actionIsDisabled={submitting}
+        actionIsDisabled={isSubmitting}
         actionnName="Send verification email"
         initialEmailAddress=""
-        inputIsDisabled={submitting}
+        inputIsDisabled={isSubmitting}
       />
     </RouteForm>
   )
