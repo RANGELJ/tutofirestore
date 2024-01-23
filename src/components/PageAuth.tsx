@@ -1,12 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 import AuthForm from '../components/AuthForm'
-import { ActionFunction, LoaderFunction, isRouteErrorResponse, redirect, useNavigation, useRouteError } from 'react-router-dom'
+import { ActionFunction, LoaderFunction, isRouteErrorResponse, redirect, useRouteError } from 'react-router-dom'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
 import routerGetPaths from '../shared/routerGetPaths'
 import { sendSignInLinkToEmail } from 'firebase/auth'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
 import RouteForm from './RouteForm'
 import localStorageSetFirebaseEmailWaitingToBeVerified from '../shared/localStorageSetFirebaseEmailWaitingToBeVerified'
+import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
 
 export const loader: LoaderFunction = async () => {
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
@@ -40,7 +41,7 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export const Component = () => {
-  const submitting = useNavigation().state === 'submitting'
+  const submitting = useNavigationIsSubmitting()
 
   return (
     <RouteForm method="POST">

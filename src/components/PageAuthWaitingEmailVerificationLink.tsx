@@ -9,6 +9,7 @@ import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStor
 import routerGetPaths from '../shared/routerGetPaths'
 import localStorageRemoveFirebaseEmailWaitingToBeVerified from '../shared/localStorageRemoveFirebaseEmailWaitingToBeVerified'
 import RouteForm from './RouteForm'
+import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
 
 type LoaderData = string
 
@@ -27,6 +28,7 @@ export const action: ActionFunction = async () => {
 
 export const Component = () => {
   const firebaseEmailWaiting = useLoaderData() as LoaderData
+  const submitting = useNavigationIsSubmitting()
 
   return (
     <RouteForm method="POST">
@@ -36,7 +38,7 @@ export const Component = () => {
         title="Waiting for email verification"
         initialEmailAddress={firebaseEmailWaiting}
         instructions="Please check your invoice"
-        actionIsDisabled={false}
+        actionIsDisabled={submitting}
         inputIsDisabled
       />
     </RouteForm>
