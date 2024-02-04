@@ -10,14 +10,17 @@ import routerGetPaths from '../shared/routerGetPaths'
 import localStorageRemoveFirebaseEmailWaitingToBeVerified from '../shared/localStorageRemoveFirebaseEmailWaitingToBeVerified'
 import RouteForm from './RouteForm'
 import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
+import pageLoaderEnsureNotAuthenticated from '../shared/pageLoaderEnsureNotAuthenticated'
 
 type LoaderData = string
 
 export const loader = async (): Promise<LoaderData | Response> => {
+  pageLoaderEnsureNotAuthenticated()
+
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
 
   if (!firebaseEmailWaitingVerification) {
-    return redirect(routerGetPaths().auth)
+    throw redirect(routerGetPaths().auth)
   }
 
   return firebaseEmailWaitingVerification
