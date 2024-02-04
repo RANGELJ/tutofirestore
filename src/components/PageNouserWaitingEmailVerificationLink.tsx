@@ -1,29 +1,29 @@
 /* eslint-disable react-refresh/only-export-components */
-import AuthForm from '../components/AuthForm'
+import AuthForm from './AuthForm'
 import {
   type ActionFunction,
-  redirect,
 } from 'react-router-dom'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
-import routerGetPaths from '../shared/routerGetPaths'
 import localStorageRemoveFirebaseEmailWaitingToBeVerified from '../shared/localStorageRemoveFirebaseEmailWaitingToBeVerified'
 import RouteForm from './RouteForm'
 import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
 import usePageLoaderData from '../hooks/usePageLoaderData'
+import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 
 export const loader = async () => {
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
 
   if (!firebaseEmailWaitingVerification) {
-    throw redirect(routerGetPaths().nouser)
+    throw routerCreateRedirectResponse('nouser')
   }
 
+  console.log('here!')
   return firebaseEmailWaitingVerification
 }
 
 export const action: ActionFunction = async () => {
   localStorageRemoveFirebaseEmailWaitingToBeVerified()
-  return redirect(routerGetPaths().nouser)
+  return routerCreateRedirectResponse('nouser')
 }
 
 export const Component = () => {

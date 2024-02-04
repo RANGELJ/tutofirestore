@@ -1,25 +1,26 @@
 /* eslint-disable react-refresh/only-export-components */
 import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
-import { Await, Navigate, defer, redirect } from 'react-router-dom'
-import routerGetPaths from '../shared/routerGetPaths'
+import { Await, Navigate, defer } from 'react-router-dom'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
 import usePageLoaderData from '../hooks/usePageLoaderData'
 import AuthForm from './AuthForm'
 import { Suspense } from 'react'
 import RouteForm from './RouteForm'
+import routerGetPath from '../shared/routerGetPath'
+import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 
 export const loader = async () => {
     const auth = firebaseGetAuth()
 
     if (!isSignInWithEmailLink(auth, window.location.href)) {
-        throw redirect(routerGetPaths().root)
+        throw routerCreateRedirectResponse('root')
     }
 
     const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
 
     if (!firebaseEmailWaitingVerification) {
-        throw redirect(routerGetPaths().root)
+        throw routerCreateRedirectResponse('root')
     }
 
     return {
@@ -53,7 +54,7 @@ export const Component = () => {
             <Await
                 resolve={deferred.data.signInWithEmailLink}
                 errorElement={(
-                    <RouteForm method="GET" resource={routerGetPaths().root}>
+                    <RouteForm method="GET" resource={routerGetPath('root')}>
                         <AuthForm
                             severity="error"
                             actionnName="Return"
@@ -66,7 +67,7 @@ export const Component = () => {
                     </RouteForm>
                 )}
             >
-                {() => <Navigate to={routerGetPaths().root} replace />}
+                {() => <Navigate to={routerGetPath('root')} replace />}
             </Await>
         </Suspense>
     )

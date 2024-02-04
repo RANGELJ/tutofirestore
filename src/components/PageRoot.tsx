@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-import { redirect } from 'react-router-dom'
 import firebaseGetCurrentUser from '../shared/firebaseGetCurrentUser'
-import routerGetPaths from '../shared/routerGetPaths'
+import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 
 export const loader = async () => {
   const user = await firebaseGetCurrentUser()
@@ -10,7 +9,7 @@ export const loader = async () => {
     return null
   }
 
-  throw redirect(routerGetPaths().nouser)
+  throw routerCreateRedirectResponse('nouser')
 }
 
-export const Component = () => null
+export const Component = () => <div>Hello</div>
