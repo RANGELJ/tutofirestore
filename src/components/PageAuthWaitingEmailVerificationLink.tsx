@@ -3,7 +3,6 @@ import AuthForm from '../components/AuthForm'
 import {
   type ActionFunction,
   redirect,
-  useLoaderData,
 } from 'react-router-dom'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
 import routerGetPaths from '../shared/routerGetPaths'
@@ -11,10 +10,9 @@ import localStorageRemoveFirebaseEmailWaitingToBeVerified from '../shared/localS
 import RouteForm from './RouteForm'
 import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
 import pageLoaderEnsureNotAuthenticated from '../shared/pageLoaderEnsureNotAuthenticated'
+import usePageLoaderData from '../hooks/usePageLoaderData'
 
-type LoaderData = string
-
-export const loader = async (): Promise<LoaderData | Response> => {
+export const loader = async () => {
   pageLoaderEnsureNotAuthenticated()
 
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
@@ -32,7 +30,7 @@ export const action: ActionFunction = async () => {
 }
 
 export const Component = () => {
-  const firebaseEmailWaiting = useLoaderData() as LoaderData
+  const firebaseEmailWaiting = usePageLoaderData<typeof loader>()
 
   const isSubmitting = useNavigationIsSubmitting()
 

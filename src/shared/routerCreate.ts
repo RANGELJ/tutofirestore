@@ -16,6 +16,10 @@ const routerCreate = () => {
       path: paths.authWaitingEmailVerificationLink,
       lazy: () => import('../components/PageAuthWaitingEmailVerificationLink.tsx'),
     },
+    {
+      path: paths.authProcessingLink,
+      lazy: () => import('../components/PageAuthProcessingLink.tsx'),
+    },
   ])
 }
 

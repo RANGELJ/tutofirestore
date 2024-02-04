@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import AuthForm from '../components/AuthForm'
-import { ActionFunction, LoaderFunction, isRouteErrorResponse, redirect, useRouteError } from 'react-router-dom'
+import { ActionFunction, isRouteErrorResponse, redirect, useRouteError } from 'react-router-dom'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
 import routerGetPaths from '../shared/routerGetPaths'
 import { sendSignInLinkToEmail } from 'firebase/auth'
@@ -10,13 +10,13 @@ import localStorageSetFirebaseEmailWaitingToBeVerified from '../shared/localStor
 import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
 import pageLoaderEnsureNotAuthenticated from '../shared/pageLoaderEnsureNotAuthenticated'
 
-export const loader: LoaderFunction = async () => {
+export const loader = async () => {
   pageLoaderEnsureNotAuthenticated()
 
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
 
   if (firebaseEmailWaitingVerification) {
-    throw redirect(routerGetPaths().root)
+    throw redirect(routerGetPaths().authWaitingEmailVerificationLink)
   }
 
   return null
