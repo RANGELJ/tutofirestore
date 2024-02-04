@@ -9,16 +9,13 @@ import routerGetPaths from '../shared/routerGetPaths'
 import localStorageRemoveFirebaseEmailWaitingToBeVerified from '../shared/localStorageRemoveFirebaseEmailWaitingToBeVerified'
 import RouteForm from './RouteForm'
 import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
-import pageLoaderEnsureNotAuthenticated from '../shared/pageLoaderEnsureNotAuthenticated'
 import usePageLoaderData from '../hooks/usePageLoaderData'
 
 export const loader = async () => {
-  pageLoaderEnsureNotAuthenticated()
-
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
 
   if (!firebaseEmailWaitingVerification) {
-    throw redirect(routerGetPaths().auth)
+    throw redirect(routerGetPaths().nouser)
   }
 
   return firebaseEmailWaitingVerification
@@ -26,7 +23,7 @@ export const loader = async () => {
 
 export const action: ActionFunction = async () => {
   localStorageRemoveFirebaseEmailWaitingToBeVerified()
-  return redirect(routerGetPaths().auth)
+  return redirect(routerGetPaths().nouser)
 }
 
 export const Component = () => {

@@ -9,16 +9,22 @@ const routerCreate = () => {
       lazy: () => import('../components/PageRoot.tsx'),
     },
     {
-      path: paths.auth,
-      lazy: () => import('../components/PageAuth.tsx'),
-    },
-    {
-      path: paths.authWaitingEmailVerificationLink,
-      lazy: () => import('../components/PageAuthWaitingEmailVerificationLink.tsx'),
-    },
-    {
-      path: paths.authProcessingLink,
-      lazy: () => import('../components/PageAuthProcessingLink.tsx'),
+      path: paths.nouser,
+      lazy: () => import('../components/PageNouser.tsx'),
+      children: [
+        {
+          path: '',
+          lazy: () => import('../components/PageAuth.tsx'),
+        },
+        {
+          path: paths.authWaitingEmailVerificationLink,
+          lazy: () => import('../components/PageAuthWaitingEmailVerificationLink.tsx'),
+        },
+        {
+          path: paths.authProcessingLink,
+          lazy: () => import('../components/PageAuthProcessingLink.tsx'),
+        },
+      ],
     },
   ])
 }

@@ -10,7 +10,7 @@ export const loader = async () => {
     return null
   }
 
-  throw redirect(routerGetPaths().auth)
+  throw redirect(routerGetPaths().nouser)
 }
 
 export const Component = () => null

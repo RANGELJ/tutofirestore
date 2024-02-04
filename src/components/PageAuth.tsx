@@ -8,11 +8,8 @@ import firebaseGetAuth from '../shared/firebaseGetAuth'
 import RouteForm from './RouteForm'
 import localStorageSetFirebaseEmailWaitingToBeVerified from '../shared/localStorageSetFirebaseEmailWaitingToBeVerified'
 import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
-import pageLoaderEnsureNotAuthenticated from '../shared/pageLoaderEnsureNotAuthenticated'
 
 export const loader = async () => {
-  pageLoaderEnsureNotAuthenticated()
-
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
 
   if (firebaseEmailWaitingVerification) {
@@ -39,7 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   localStorageSetFirebaseEmailWaitingToBeVerified(email)
 
-  return redirect(routerGetPaths().auth)
+  return redirect(routerGetPaths().nouser)
 }
 
 export const Component = () => {
@@ -68,7 +65,7 @@ export const ErrorBoundary = () => {
     : 'An unexpected error occurred'
 
   return (
-    <RouteForm method="GET" resource={routerGetPaths().auth}>
+    <RouteForm method="GET" resource={routerGetPaths().nouser}>
       <AuthForm
         severity="error"
         title="Welcome"

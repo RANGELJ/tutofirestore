@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
-import pageLoaderEnsureNotAuthenticated from '../shared/pageLoaderEnsureNotAuthenticated'
 import { Await, Navigate, defer, redirect } from 'react-router-dom'
 import routerGetPaths from '../shared/routerGetPaths'
 import localStorageGetFirebaseEmailWaitingToBeVerified from '../shared/localStorageGetFirebaseEmailWaitingToBeVerified'
@@ -11,8 +10,6 @@ import { Suspense } from 'react'
 import RouteForm from './RouteForm'
 
 export const loader = async () => {
-    pageLoaderEnsureNotAuthenticated()
-
     const auth = firebaseGetAuth()
 
     if (!isSignInWithEmailLink(auth, window.location.href)) {
