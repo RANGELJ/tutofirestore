@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 
-import { ActionFunction, Navigate, Outlet } from 'react-router-dom'
+import { ActionFunction, Outlet } from 'react-router-dom'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
 import { sendSignInLinkToEmail } from 'firebase/auth'
 import localStorageSetFirebaseEmailWaitingToBeVerified from '../shared/localStorageSetFirebaseEmailWaitingToBeVerified'
@@ -8,7 +8,6 @@ import routerGetPath from '../shared/routerGetPath'
 import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 import browserGetHostWithProtocol from '../shared/browserGetHostWithProtocol'
 import firebaseGetCurrentUser from '../shared/firebaseGetCurrentUser'
-import useFirebaseCurrentUser from '../hooks/useFirebaseCurrentUser'
 
 export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData()
@@ -40,12 +39,4 @@ export const loader = async () => {
     return null
 }
 
-export const Component = () => {
-  const currentUser = useFirebaseCurrentUser()
-
-  if (currentUser) {
-    return <Navigate to={routerGetPath('root')} replace />
-  }
-
-  return <Outlet />
-}
+export const Component = () => <Outlet />
