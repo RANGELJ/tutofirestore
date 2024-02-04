@@ -43,7 +43,6 @@ export const Component = () => {
         email,
         deferred,
     } = usePageLoaderData<typeof loader>()
-    console.log(deferred)
 
     return (
         <Suspense
