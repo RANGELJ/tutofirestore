@@ -20,7 +20,7 @@ const routerCreate = () => createBrowserRouter([
       },
       {
         path: routerGetPath('nouser/processingLink').split('/').at(-1),
-        lazy: () => import('../components/PageAuthProcessingLink.tsx'),
+        lazy: () => import('../components/PageNouserProcessingLink.tsx'),
       },
     ],
   },

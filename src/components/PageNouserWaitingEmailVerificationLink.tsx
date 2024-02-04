@@ -17,7 +17,6 @@ export const loader = async () => {
     throw routerCreateRedirectResponse('nouser')
   }
 
-  console.log('here!')
   return firebaseEmailWaitingVerification
 }
 
