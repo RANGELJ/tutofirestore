@@ -9,6 +9,7 @@ import { Suspense } from 'react'
 import RouteForm from './RouteForm'
 import routerGetPath from '../shared/routerGetPath'
 import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
+import localStorageRemoveFirebaseEmailWaitingToBeVerified from '../shared/localStorageRemoveFirebaseEmailWaitingToBeVerified'
 
 export const loader = async () => {
     const auth = firebaseGetAuth()
@@ -23,10 +24,16 @@ export const loader = async () => {
         throw routerCreateRedirectResponse('root')
     }
 
+    const signInWithEmailLinkFunction = async () => {
+        await signInWithEmailLink(auth, firebaseEmailWaitingVerification, window.location.href)
+        localStorageRemoveFirebaseEmailWaitingToBeVerified()
+        return null
+    }
+
     return {
         email: firebaseEmailWaitingVerification,
         deferred: defer({
-            signInWithEmailLink: signInWithEmailLink(auth, firebaseEmailWaitingVerification, window.location.href),
+            signInWithEmailLink: signInWithEmailLinkFunction(),
         }),
     }
 }
@@ -36,6 +43,7 @@ export const Component = () => {
         email,
         deferred,
     } = usePageLoaderData<typeof loader>()
+    console.log(deferred)
 
     return (
         <Suspense

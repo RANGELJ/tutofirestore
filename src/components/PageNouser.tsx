@@ -7,6 +7,7 @@ import localStorageSetFirebaseEmailWaitingToBeVerified from '../shared/localStor
 import routerGetPath from '../shared/routerGetPath'
 import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 import browserGetHostWithProtocol from '../shared/browserGetHostWithProtocol'
+import firebaseGetCurrentUser from '../shared/firebaseGetCurrentUser'
 
 export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData()
@@ -28,10 +29,10 @@ export const action: ActionFunction = async ({ request }) => {
     return routerCreateRedirectResponse('nouser')
   }
 
-export const loader = () => {
-    const { currentUser } = firebaseGetAuth()
+export const loader = async () => {
+  const user = await firebaseGetCurrentUser()
 
-    if (currentUser) {
+    if (user) {
         throw routerCreateRedirectResponse('root')
     }
 
