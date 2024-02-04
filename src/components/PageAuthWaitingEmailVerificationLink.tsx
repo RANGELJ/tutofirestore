@@ -15,9 +15,11 @@ type LoaderData = string
 
 export const loader = async (): Promise<LoaderData | Response> => {
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
+
   if (!firebaseEmailWaitingVerification) {
     return redirect(routerGetPaths().auth)
   }
+
   return firebaseEmailWaitingVerification
 }
 
@@ -28,6 +30,7 @@ export const action: ActionFunction = async () => {
 
 export const Component = () => {
   const firebaseEmailWaiting = useLoaderData() as LoaderData
+
   const isSubmitting = useNavigationIsSubmitting()
 
   return (

@@ -31,7 +31,7 @@ export const action: ActionFunction = async ({ request }) => {
   const email = rawEmail.toString()
 
   await sendSignInLinkToEmail(firebaseGetAuth(), email, {
-    url: `${window.location.protocol}//${window.location.host}/${routerGetPaths().auth}`,
+    url: `${window.location.protocol}//${window.location.host}${routerGetPaths().authProcessingLink}`,
     handleCodeInApp: true,
   })
 
