@@ -6,15 +6,20 @@ import firebaseGetAuth from '../shared/firebaseGetAuth'
 import useFirebaseCurrentUser from '../hooks/useFirebaseCurrentUser'
 import { Navigate } from 'react-router-dom'
 import routerGetPath from '../shared/routerGetPath'
+import firestoreGetUserDocument from '../shared/firestoreGetUserDocument'
 
 export const loader = async () => {
   const user = await firebaseGetCurrentUser()
 
-  if (user) {
-    return null
+  if (!user) {
+    throw routerCreateRedirectResponse('nouser')
   }
 
-  throw routerCreateRedirectResponse('nouser')
+  const userDoc = await firestoreGetUserDocument(user.uid)
+
+  console.log(userDoc)
+
+  return null
 }
 
 export const Component = () => {
