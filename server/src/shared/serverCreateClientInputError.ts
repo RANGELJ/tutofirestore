@@ -1,10 +1,15 @@
-type ClientInputError = Error & { status?: number }
+export const ClientInputErrorSymbol = Symbol('InputError')
 
-const serverCreateClientInputError = (message: string) => {
-    const baseError = new Error(message)
-    const error: ClientInputError = baseError
-    error.status = 400
-    return error
+export type ClientInputError = {
+    message: string;
+    status: number;
+    symbol: typeof ClientInputErrorSymbol;
 }
+
+const serverCreateClientInputError = (message: string): ClientInputError => ({
+    message,
+    status: 401,
+    symbol: ClientInputErrorSymbol,
+})
 
 export default serverCreateClientInputError
