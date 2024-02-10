@@ -8,17 +8,22 @@ const firebaseAuthMiddleware: RequestHandler = async (request, response, next) =
   const authorizationHeader = request.header('Authorization')
 
   if (!authorizationHeader) {
-    response.status(401).send('Unauthorized')
+    response.status(401).json({ messate: 'Unauthorized' })
     return
   }
 
   const idToken = authorizationHeader.split('Bearer ')[1]
 
-  const decodedIdToken = await auth(firebase).verifyIdToken(idToken)
 
-  request.headers.uid = decodedIdToken.uid
-
-  next()
+  auth(firebase)
+    .verifyIdToken(idToken)
+    .then((decodedIdToken) => {
+      request.headers.uid = decodedIdToken.uid
+      next()
+    })
+    .catch(() => {
+      response.status(401).json({ messate: 'Unauthorized' })
+    })
 }
 
 export default firebaseAuthMiddleware
