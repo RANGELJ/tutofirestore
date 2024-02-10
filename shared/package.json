@@ -1,0 +1,15 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "A set of functions and types shared by this app server and client",
+  "scripts": {
+    "buildNode": "rm -rf distNode && tsc --module node16 --outDir distNode && cp package.json distNode/package.json && cp package-lock.json distNode/package-lock.json",
+    "buildBrowser": "rm -rf distBrowser && tsc --module ES6 --outDir distBrowser && cp package.json distBrowser/package.json && cp package-lock.json distBrowser/package-lock.json",
+    "build": "npm run buildNode && npm run buildBrowser"
+  },
+  "author": "Jorge Luis Rangel",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { signOut } from 'firebase/auth'
+import valueIsRecord from 'shared/valueIsRecord'
 import firebaseGetCurrentUser from '../shared/firebaseGetCurrentUser'
 import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
 import useFirebaseCurrentUser from '../hooks/useFirebaseCurrentUser'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useRouteError } from 'react-router-dom'
 import routerGetPath from '../shared/routerGetPath'
 import serverRequest from '../shared/serverRequest'
 
@@ -30,4 +31,16 @@ export const Component = () => {
   return (
     <button onClick={() => signOut(firebaseGetAuth())}>Clear</button>
   )
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+
+  if (!valueIsRecord(error)) {
+    return <div>Unknown error</div>
+  }
+
+  console.log(error)
+
+  return null
 }

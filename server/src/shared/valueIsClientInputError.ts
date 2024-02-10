@@ -1,5 +1,5 @@
-import { ClientInputError, ClientInputErrorSymbol } from './serverCreateClientInputError';
-import valueIsRecord from './valueIsRecord';
+import valueIsRecord from 'shared/valueIsRecord'
+import { ClientInputError, ClientInputErrorSymbol } from './serverCreateClientInputError'
 
 const valueIsClientInputError = (value: unknown): value is ClientInputError => {
     if (!valueIsRecord(value)) {
