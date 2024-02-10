@@ -1,5 +1,5 @@
 import { RequestHandler, Request, Response } from 'express'
-import valueIsClientInputError from './valueIsClientInputError'
+import valueIsClientInputError from 'shared/valueIsClientInputError'
 
 const serverWrapHandler = (base: (
     request: Request,
@@ -12,7 +12,7 @@ const serverWrapHandler = (base: (
     } catch (error) {
         if (valueIsClientInputError(error)) {
             response.status(error.status)
-            response.json({ message: error.message })
+            response.json(error)
         } else {
             response.status(500)
             response.json({ message: 'unknown error' })

@@ -3,6 +3,7 @@ import serverMiddlewareFirebaseAuthToken from '../../shared/serverMiddlewareFire
 import serverWrapHandler from '../../shared/serverWrapHandler'
 import serverResponseGetUserId from '../../shared/serverResponseGetUserId'
 import databaseGetConnection from '../../shared/databaseGetConnection'
+import serverCreateClientInputError from '../../shared/serverCreateClientInputError'
 
 const router = express.Router()
 
@@ -15,6 +16,10 @@ router.get('/workspaces', serverWrapHandler(async (request, response) => {
   const workspaces = await db('workspaces')
     .select('id', 'name')
     .where('userId', userId)
+
+  if (workspaces) {
+    throw serverCreateClientInputError('noWorkspaces')
+  }
 
   return workspaces
 }))
