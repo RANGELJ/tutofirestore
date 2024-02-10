@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { signOut } from 'firebase/auth'
-import valueIsRecord from 'shared/valueIsRecord'
 import valueIsNotEmptyString from 'shared/valueIsNotEmptyString'
 import valueIsClientInputError from 'shared/valueIsClientInputError'
 import firebaseGetCurrentUser from '../shared/firebaseGetCurrentUser'
@@ -36,23 +35,29 @@ export const Component = () => {
 }
 
 export const ErrorBoundary = () => {
-  const error = useRouteError()
+  const routeError = useRouteError()
 
-  if (!valueIsRecord(error)) {
+  const error = (() => {
+    if (!valueIsNotEmptyString(routeError)) {
+      return undefined
+    } 
+
+    try {
+      const rawErrorObject = JSON.parse(routeError)
+
+      if (!valueIsClientInputError(rawErrorObject)) {
+        return undefined
+      }
+
+      return rawErrorObject
+    } catch {
+      return undefined
+    }
+  })()
+
+  if (!error) {
     return <div>Server is down</div>
   }
 
-  const { message } = error
-
-  if (!valueIsNotEmptyString(message)) {
-    return <div>Server is down</div>
-  }
-
-  const serverError: unknown = JSON.parse(message)
-
-  if (!valueIsClientInputError(serverError)) {
-    return <div>Server is down</div>
-  }
-
-  return <div>{serverError.message}</div>
+  return <div>{error.message}</div>
 }
