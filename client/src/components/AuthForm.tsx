@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material'
+import AnimatedBackground from './AnimatedBackground'
 
 const Frame = styled(FormControl)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -78,6 +79,7 @@ const AuthForm = ({
   actionIsDisabled,
 }: Props) => (
   <Frame>
+    <AnimatedBackground />
     <ContainerPaper>
       <Title variant="h5">{title}</Title>
       <InstructionsBox>
