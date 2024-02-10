@@ -1,11 +1,12 @@
-import { RequestHandler, Request } from 'express'
+import { RequestHandler, Request, Response } from 'express'
 import valueIsClientInputError from './valueIsClientInputError'
 
 const serverWrapHandler = (base: (
     request: Request,
+    response: Response,
 ) => Promise<unknown>): RequestHandler => async (request, response) => {
     try {
-        const result = await base(request)
+        const result = await base(request, response)
         response.status(200)
         response.json(result)
     } catch (error) {
