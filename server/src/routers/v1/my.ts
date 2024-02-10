@@ -17,10 +17,6 @@ router.get('/workspaces', serverWrapHandler(async (request, response) => {
     .select('id', 'name')
     .where('userId', userId)
 
-  if (workspaces) {
-    throw serverCreateClientInputError('noWorkspaces')
-  }
-
   return workspaces
 }))
 

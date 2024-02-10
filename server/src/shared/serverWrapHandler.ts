@@ -11,7 +11,7 @@ const serverWrapHandler = (base: (
         response.json(result)
     } catch (error) {
         if (valueIsClientInputError(error)) {
-            response.status(error.status)
+            response.status(401)
             response.json(error)
         } else {
             response.status(500)
