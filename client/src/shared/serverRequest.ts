@@ -10,7 +10,7 @@ const serverRequest = async () => {
   
   const response = await fetch(`${import.meta.env.VITE_SERVER_HOST}/v1/my/workspaces`, {
     headers: idToken ? {
-      Authorization: `Bearer ${idToken}ff`,
+      Authorization: `Bearer ${idToken}`,
     } : undefined,
   })
 
