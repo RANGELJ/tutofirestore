@@ -13,15 +13,14 @@ const serverRequest = async () => {
       Authorization: `Bearer ${idToken}`,
     } : undefined,
   })
-  console.log('response', response)
 
   if (response.status !== 200) {
     throw await response.text()
   }
 
-  const data = await response.json()
+  const data: unknown = await response.json()
 
-  console.log('data', data)
+  return data
 }
 
 export default serverRequest

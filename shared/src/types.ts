@@ -4,3 +4,8 @@ export type ClientInputError = {
     message: string;
     id: typeof ClientInputErrorId;
 }
+
+export type Workspace = {
+    id: number;
+    name: string;
+}

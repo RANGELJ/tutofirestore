@@ -17,7 +17,9 @@ export const loader = async () => {
     throw routerCreateRedirectResponse('nouser')
   }
 
-  await serverRequest()
+  const data = await serverRequest()
+
+  console.log('data', data)
 
   return null
 }
