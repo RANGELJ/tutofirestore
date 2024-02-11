@@ -1,4 +1,14 @@
-const backgroundCreate = (svgElement: SVGSVGElement) => {
+type Args = {
+    svgElement: SVGSVGElement;
+    width: number;
+    height: number;
+}
+
+const backgroundCreate = ({
+    svgElement,
+    width,
+    height,
+}: Args) => {
     type Particle = {
         element: SVGCircleElement;
         mass: number;
@@ -9,23 +19,28 @@ const backgroundCreate = (svgElement: SVGSVGElement) => {
         cy: number;
     }
 
-    const maxMass = 100
-    const minMass = 1
+    const maxMass = 30
+    const minMass = 5
 
-    const maxRadius = 10
-    const minRadius = 1
+    const maxRadius = 20
+    const minRadius = 10
 
-    const forceMultiplier = 0.1
+    const forceMultiplier = 0.5
 
-    const maxCx = 500
-    const maxCy = 500
+    const maxCx = width
+    const maxCy = height
 
-    const maxAcceleration = 0.03
+    const maxAcceleration = 0.1
 
     const createParticle = (): Particle => {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-        circle.setAttribute('fill', 'blue')
         svgElement.appendChild(circle)
+
+        const mass = Math.random() * (maxMass - minMass) + minMass
+        const opacityByMass = (mass / maxMass) * 0.1
+
+        circle.setAttribute('opacity', `${opacityByMass}`)
+        circle.setAttribute('fill', 'blue')
 
         return {
             element: circle,
@@ -33,13 +48,13 @@ const backgroundCreate = (svgElement: SVGSVGElement) => {
             velocity: { x: 0, y: 0 },
             cy: Math.random() * maxCy,
             cx: Math.random() * maxCx,
-            mass: Math.random() * (maxMass - minMass) + minMass,
+            mass,
             radius: Math.random() * (maxRadius - minRadius) + minRadius,
         }
     }
 
     let isRunning = true
-    const particles = (new Array(20)).fill(null).map(createParticle)
+    const particles = (new Array(50)).fill(null).map(createParticle)
 
     const updateAcceleration = (particle: Particle, otherParticle: Particle) => {
         const dx = otherParticle.cx - particle.cx
@@ -70,12 +85,10 @@ const backgroundCreate = (svgElement: SVGSVGElement) => {
         for (let particleIndex = 0; particleIndex < particles.length; particleIndex++) {
             const particle = particles[particleIndex]
 
-            const opacityByMass = particle.mass / maxMass
 
             particle.element.setAttribute('cx', `${particle.cx}`)
             particle.element.setAttribute('cy', `${particle.cy}`)
             particle.element.setAttribute('r', `${particle.radius}`)
-            particle.element.setAttribute('opacity', `${opacityByMass}`)
         }
 
         for (let particleIndex = 0; particleIndex < particles.length; particleIndex++) {
@@ -100,7 +113,7 @@ const backgroundCreate = (svgElement: SVGSVGElement) => {
             particle.cx += particle.velocity.x
             particle.cy += particle.velocity.y
 
-            const bounce = 0.9
+            const bounce = 1.1
 
             if (particle.cx > maxCx - particle.radius) {
                 particle.cx = maxCx - particle.radius
@@ -112,12 +125,14 @@ const backgroundCreate = (svgElement: SVGSVGElement) => {
                 particle.acceleration.x *= -bounce
             }
 
-            if (particle.cy > maxCy) {
-                particle.cy = maxCy
+            if (particle.cy > maxCy - particle.radius) {
+                particle.cy = maxCy - particle.radius
                 particle.velocity.y = 0
-            } else if (particle.cy < 0) {
-                particle.cy = 0
+                particle.acceleration.y *= -bounce
+            } else if (particle.cy < particle.radius) {
+                particle.cy = particle.radius
                 particle.velocity.y = 0
+                particle.acceleration.y *= -bounce
             }
         }
 

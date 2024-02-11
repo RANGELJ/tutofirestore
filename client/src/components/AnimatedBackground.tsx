@@ -20,12 +20,24 @@ const AnimatedBackground = () => {
         if (!element) {
             return undefined
         }
-        return backgroundCreate(element)
+        const parentElement = element.parentElement
+        if (!parentElement) {
+            return undefined
+        }
+        const parentRatio = parentElement.clientWidth / parentElement.clientHeight
+        const viewBoxWidth = 1000
+        const viewBoxHeight = viewBoxWidth / parentRatio
+        element.setAttribute('viewBox', `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
+        return backgroundCreate({
+            svgElement: element,
+            width: viewBoxWidth,
+            height: viewBoxHeight,
+        })
     }, [])
 
     return (
         <Background>
-            <svg viewBox="0 0 500 500" ref={svgRef} />
+            <svg viewBox="0 0 500 500" ref={svgRef} style={{ width: '100%' }} />
         </Background>
     )
 }

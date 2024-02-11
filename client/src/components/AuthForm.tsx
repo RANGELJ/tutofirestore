@@ -1,5 +1,4 @@
 import FormControl from '@mui/material/FormControl'
-import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Alert, { type AlertColor } from '@mui/material/Alert'
 import TextField from '@mui/material/TextField'
@@ -25,7 +24,7 @@ const Frame = styled(FormControl)(({ theme }) => ({
   gridTemplateRows: '2fr 3fr 2fr',
 }))
 
-const ContainerPaper = styled(Paper)(({ theme }) => {
+const ContainerPaper = styled(Box)(({ theme }) => {
   const gap = theme.spacing(2)
   return {
     gridColumn: '2 / 3',
