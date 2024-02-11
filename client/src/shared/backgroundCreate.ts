@@ -1,48 +1,125 @@
 const backgroundCreate = (svgElement: SVGSVGElement) => {
-    let ticks = 0
-
-    type Property = {
-        get: () => number;
-    }
-
-    // Ocilates bewteen 0.3 and 0.8
-    const opacityUpdater = () => Math.cos(ticks / 45) / 4 + 0.55
-    const cxGetter = () => Math.sin(2 + ticks / 10) + (3 * Math.sin(ticks / 10)) + 10
-
-    type Circle = {
+    type Particle = {
         element: SVGCircleElement;
-        opacity: Property;
-        cx: Property;
+        mass: number;
+        acceleration: { x: number; y: number; };
+        velocity: { x: number; y: number; };
+        radius: number;
+        cx: number;
+        cy: number;
     }
 
-    const createCircle = (): Circle => {
+    const maxMass = 100
+    const minMass = 1
+
+    const maxRadius = 10
+    const minRadius = 1
+
+    const forceMultiplier = 0.1
+
+    const maxCx = 500
+    const maxCy = 500
+
+    const maxAcceleration = 0.03
+
+    const createParticle = (): Particle => {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+        circle.setAttribute('fill', 'blue')
         svgElement.appendChild(circle)
 
         return {
             element: circle,
-            opacity: { get: opacityUpdater },
-            cx: { get: cxGetter }
+            acceleration: { x: 0, y: 0 },
+            velocity: { x: 0, y: 0 },
+            cy: Math.random() * maxCy,
+            cx: Math.random() * maxCx,
+            mass: Math.random() * (maxMass - minMass) + minMass,
+            radius: Math.random() * (maxRadius - minRadius) + minRadius,
         }
     }
 
     let isRunning = true
-    const circles = [
-        createCircle()
-    ]
+    const particles = (new Array(20)).fill(null).map(createParticle)
 
-    const renderOnce = () => {
-        for (let circleIndex = 0; circleIndex < circles.length; circleIndex++) {
-            const circle = circles[circleIndex]
-            console.log(circle.cx.get())
-            circle.element.setAttribute('cx', `${circle.cx.get()}`)
-            circle.element.setAttribute('cy', '0')
-            circle.element.setAttribute('r', '200')
-            circle.element.setAttribute('fill', 'blue')
-            circle.element.setAttribute('opacity', `${circle.opacity.get()}`)
+    const updateAcceleration = (particle: Particle, otherParticle: Particle) => {
+        const dx = otherParticle.cx - particle.cx
+        const dy = otherParticle.cy - particle.cy
+        const distance = Math.sqrt(dx * dx + dy * dy)
+
+        const force = (particle.mass * otherParticle.mass) / (distance * distance)
+
+        const acceleration = (force * forceMultiplier) / particle.mass
+
+        particle.acceleration.x += acceleration * dx / distance
+        particle.acceleration.y += acceleration * dy / distance
+
+        if (particle.acceleration.x > maxAcceleration) {
+            particle.acceleration.x = maxAcceleration
+        } else if (particle.acceleration.x < -maxAcceleration) {
+            particle.acceleration.x = -maxAcceleration
         }
 
-        ticks += 1
+        if (particle.acceleration.y > maxAcceleration) {
+            particle.acceleration.y = maxAcceleration
+        } else if (particle.acceleration.y < -maxAcceleration) {
+            particle.acceleration.y = -maxAcceleration
+        }
+    }
+
+    const renderOnce = () => {
+        for (let particleIndex = 0; particleIndex < particles.length; particleIndex++) {
+            const particle = particles[particleIndex]
+
+            const opacityByMass = particle.mass / maxMass
+
+            particle.element.setAttribute('cx', `${particle.cx}`)
+            particle.element.setAttribute('cy', `${particle.cy}`)
+            particle.element.setAttribute('r', `${particle.radius}`)
+            particle.element.setAttribute('opacity', `${opacityByMass}`)
+        }
+
+        for (let particleIndex = 0; particleIndex < particles.length; particleIndex++) {
+            const particle = particles[particleIndex]
+            for (let otherParticleIndex = 0; otherParticleIndex < particles.length; otherParticleIndex++) {
+                if (particleIndex === otherParticleIndex) {
+                    continue
+                }
+        
+                const otherParticle = particles[otherParticleIndex]
+
+                updateAcceleration(particle, otherParticle)
+            }
+        }
+    
+        for (let particleIndex = 0; particleIndex < particles.length; particleIndex++) {
+            const particle = particles[particleIndex]
+
+            particle.velocity.x += particle.acceleration.x / particle.mass
+            particle.velocity.y += particle.acceleration.y / particle.mass
+
+            particle.cx += particle.velocity.x
+            particle.cy += particle.velocity.y
+
+            const bounce = 0.9
+
+            if (particle.cx > maxCx - particle.radius) {
+                particle.cx = maxCx - particle.radius
+                particle.velocity.x = 0
+                particle.acceleration.x *= -bounce
+            } else if (particle.cx < particle.radius) {
+                particle.cx = particle.radius
+                particle.velocity.x = 0
+                particle.acceleration.x *= -bounce
+            }
+
+            if (particle.cy > maxCy) {
+                particle.cy = maxCy
+                particle.velocity.y = 0
+            } else if (particle.cy < 0) {
+                particle.cy = 0
+                particle.velocity.y = 0
+            }
+        }
 
         if (!isRunning) {
             return
@@ -55,7 +132,7 @@ const backgroundCreate = (svgElement: SVGSVGElement) => {
 
     return () => {
         isRunning = false
-        circles.forEach((circle) => {
+        particles.forEach((circle) => {
             circle.element.remove()
         })
     }
