@@ -8,7 +8,7 @@ import firebaseGetAuth from '../shared/firebaseGetAuth'
 import useFirebaseCurrentUser from '../hooks/useFirebaseCurrentUser'
 import { Navigate, useRouteError } from 'react-router-dom'
 import routerGetPath from '../shared/routerGetPath'
-import serverRequest from '../shared/serverRequest'
+import serverFetchWorkspaces from '../shared/serverFetchWorkspaces'
 
 export const loader = async () => {
   const user = await firebaseGetCurrentUser()
@@ -17,9 +17,9 @@ export const loader = async () => {
     throw routerCreateRedirectResponse('nouser')
   }
 
-  const data = await serverRequest()
+  const workspaces = await serverFetchWorkspaces()
 
-  console.log('data', data)
+  console.log('workspaces', workspaces)
 
   return null
 }
