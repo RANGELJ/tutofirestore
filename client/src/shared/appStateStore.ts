@@ -30,8 +30,8 @@ const appStateStore = (() => {
             if (newState === state) {
                 return
             }
-            subscriptions.forEach((sub) => sub())
             state = newState
+            subscriptions.forEach((sub) => sub())
         },
         subscribe: (callback: SubscriptionCallback) => {
             subscriptions.push(callback)

@@ -8,6 +8,7 @@ const firebaseGetCurrentUser = () => new Promise<User | null>((resolve) => {
 
     if (isLoaded) {
         resolve(selectFirebaseUser(appStateStore.getState()))
+        return
     }
 
     const unsubscribe = appStateStore.subscribe(() => {
