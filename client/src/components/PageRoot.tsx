@@ -5,9 +5,7 @@ import valueIsClientInputError from 'shared/valueIsClientInputError'
 import firebaseGetCurrentUser from '../shared/firebaseGetCurrentUser'
 import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
-import useFirebaseCurrentUser from '../hooks/useFirebaseCurrentUser'
-import { Navigate, useRouteError } from 'react-router-dom'
-import routerGetPath from '../shared/routerGetPath'
+import { useRouteError } from 'react-router-dom'
 import serverFetchWorkspaces from '../shared/serverFetchWorkspaces'
 
 export const loader = async () => {
@@ -19,22 +17,16 @@ export const loader = async () => {
 
   const workspaces = await serverFetchWorkspaces()
 
-  console.log('workspaces', workspaces)
-
-  return null
-}
-
-export const Component = () => {
-  const currentUser = useFirebaseCurrentUser()
-
-  if (!currentUser) {
-    return <Navigate to={routerGetPath('nouser')} replace />
+  if (workspaces.length === 0) {
+    throw routerCreateRedirectResponse('workspaces/first')
   }
 
-  return (
-    <button onClick={() => signOut(firebaseGetAuth())}>Clear</button>
-  )
+  return workspaces
 }
+
+export const Component = () => (
+  <button onClick={() => signOut(firebaseGetAuth())}>Clear</button>
+)
 
 export const ErrorBoundary = () => {
   const routeError = useRouteError()

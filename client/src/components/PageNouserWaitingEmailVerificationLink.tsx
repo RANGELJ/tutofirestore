@@ -9,7 +9,6 @@ import RouteForm from './RouteForm'
 import useNavigationIsSubmitting from '../hooks/useNavigationIsSubmitting'
 import usePageLoaderData from '../hooks/usePageLoaderData'
 import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
-import useFirebaseCurrentUser from '../hooks/useFirebaseCurrentUser'
 
 export const loader = async () => {
   const firebaseEmailWaitingVerification = localStorageGetFirebaseEmailWaitingToBeVerified()
@@ -27,24 +26,9 @@ export const action: ActionFunction = async () => {
 }
 
 export const Component = () => {
-  const currentUser = useFirebaseCurrentUser()
   const firebaseEmailWaiting = usePageLoaderData<typeof loader>()
 
   const isSubmitting = useNavigationIsSubmitting()
-
-  if (currentUser) {
-    return (
-      <AuthForm
-        severity="success"
-        actionnName="..."
-        title="Email verified on other tab!"
-        initialEmailAddress={firebaseEmailWaiting}
-        instructions="You can close this tab and continue on the other one."
-        actionIsDisabled
-        inputIsDisabled
-      />
-    )
-  }
 
   return (
     <RouteForm method="POST">
@@ -53,7 +37,7 @@ export const Component = () => {
         actionnName="Reset"
         title="Waiting for email verification"
         initialEmailAddress={firebaseEmailWaiting}
-        instructions="Please check your invoice"
+        instructions="Please check your invoice, you can close this tab"
         actionIsDisabled={isSubmitting}
         inputIsDisabled
       />
