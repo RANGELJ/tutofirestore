@@ -2,18 +2,14 @@
 import { signOut } from 'firebase/auth'
 import valueIsNotEmptyString from 'shared/valueIsNotEmptyString'
 import valueIsClientInputError from 'shared/valueIsClientInputError'
-import firebaseGetCurrentUser from '../shared/firebaseGetCurrentUser'
 import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
 import { useRouteError } from 'react-router-dom'
 import serverFetchWorkspaces from '../shared/serverFetchWorkspaces'
+import routerLoaderEnsuredFirebaseUser from '../shared/routerLoaderEnsuredFirebaseUser'
 
 export const loader = async () => {
-  const user = await firebaseGetCurrentUser()
-
-  if (!user) {
-    throw routerCreateRedirectResponse('nouser')
-  }
+  await routerLoaderEnsuredFirebaseUser()
 
   const workspaces = await serverFetchWorkspaces()
 
