@@ -9,6 +9,8 @@ import routerCreate from '../shared/routerCreate'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
 import { onAuthStateChanged } from 'firebase/auth'
 import routerGetPath from '../shared/routerGetPath'
+import appStateStore from '../shared/appStateStore'
+import appStateUpdateUser from '../shared/appStateUpdateUser'
 
 const router = routerCreate()
 
@@ -46,6 +48,7 @@ const theme = createTheme({
 
 const App = () => {
   useEffect(() => onAuthStateChanged(firebaseGetAuth(), (user) => {
+    appStateStore.dispatch(appStateUpdateUser(user))
     if (!user) {
       router.navigate(routerGetPath('nouser'))
     } else {
