@@ -1,11 +1,21 @@
 import { Workspace } from 'shared/types'
 import serverFetch from './serverFetch'
+import appStateStore from './appStateStore'
+import selectWorkspaces from '../appStateSelectors/selectWorkspaces'
+import setWorkspaces from '../appStateReducers/setWorkspaces'
 
 const serverFetchWorkspaces = async () => {
+  const fromStore = selectWorkspaces(appStateStore.getState())
+  console.log('fromStore', fromStore)
+  if (fromStore) {
+    return fromStore
+  }
   const data = await serverFetch({
     path: 'my/workspaces',
   })
-  return data as Workspace[]
+  const workspacesFromServer = data as Workspace[]
+  appStateStore.dispatch(setWorkspaces(workspacesFromServer))
+  return workspacesFromServer
 }
 
 export default serverFetchWorkspaces

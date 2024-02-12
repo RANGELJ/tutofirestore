@@ -1,10 +1,12 @@
-import { User } from 'firebase/auth'
+import type { User } from 'firebase/auth'
+import type { Workspace } from 'shared/types'
 
 export type AppState = {
     firebase: {
         user: User | null;
         userIsLoaded: boolean;
     };
+    workspaces?: Workspace[];
 }
 
 export type AppStateSelector<T> = (state: AppState) => T

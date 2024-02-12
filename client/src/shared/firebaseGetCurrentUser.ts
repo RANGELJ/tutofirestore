@@ -1,7 +1,7 @@
 import { type User } from 'firebase/auth'
 import appStateStore from './appStateStore'
-import selectFirebaseUserIsLoaded from '../appStateSelector/selectFirebaseUserIsLoaded'
-import selectFirebaseUser from '../appStateSelector/selectFirebaseUser'
+import selectFirebaseUserIsLoaded from '../appStateSelectors/selectFirebaseUserIsLoaded'
+import selectFirebaseUser from '../appStateSelectors/selectFirebaseUser'
 
 const firebaseGetCurrentUser = () => new Promise<User | null>((resolve) => {
     const isLoaded = selectFirebaseUserIsLoaded(appStateStore.getState())

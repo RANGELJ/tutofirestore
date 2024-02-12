@@ -1,8 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-import routerLoaderEnsuredFirebaseUser from '../shared/routerLoaderEnsuredFirebaseUser'
-
 export const loader = async () => {
-    await routerLoaderEnsuredFirebaseUser()
+    console.log('PageWorkspacesFirst loader')
     return null
 }
 

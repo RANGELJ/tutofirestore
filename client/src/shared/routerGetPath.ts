@@ -17,7 +17,7 @@ const routerGetPath = (...args: RouterGetPathParams): string => {
     case 'nouser/processingLink':
         return `${routerGetPath('nouser')}/processing-link`
     case 'workspaces/first':
-        return '/workspaces/first'
+        return `workspaces/first`
     default:
         return '/'
     }

@@ -4,11 +4,12 @@ import valueIsNotEmptyString from 'shared/valueIsNotEmptyString'
 import valueIsClientInputError from 'shared/valueIsClientInputError'
 import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
-import { useRouteError } from 'react-router-dom'
+import { Outlet, useRouteError } from 'react-router-dom'
 import serverFetchWorkspaces from '../shared/serverFetchWorkspaces'
 import routerLoaderEnsuredFirebaseUser from '../shared/routerLoaderEnsuredFirebaseUser'
 
 export const loader = async () => {
+  console.log('PageRoot loader')
   await routerLoaderEnsuredFirebaseUser()
 
   const workspaces = await serverFetchWorkspaces()
@@ -21,7 +22,10 @@ export const loader = async () => {
 }
 
 export const Component = () => (
-  <button onClick={() => signOut(firebaseGetAuth())}>Clear</button>
+  <>
+    <button onClick={() => signOut(firebaseGetAuth())}>Clear</button>
+    <Outlet />
+  </>
 )
 
 export const ErrorBoundary = () => {
@@ -46,7 +50,11 @@ export const ErrorBoundary = () => {
   })()
 
   if (!error) {
-    return <div>Server is down</div>
+    return (
+      <div>
+        <code>{`${routeError}`}</code>
+      </div>
+    )
   }
 
   return <div>{error.message}</div>
