@@ -7,6 +7,10 @@ const routerCreate = () => createBrowserRouter([
     lazy: () => import('../components/PageRoot.tsx'),
     children: [
       {
+        path: routerGetPath('workspaces'),
+        lazy: () => import('../components/PageWorkspaces.tsx'),
+      },
+      {
         path: routerGetPath('workspaces/first'),
         lazy: () => import('../components/PageWorkspacesFirst.tsx'),
       },

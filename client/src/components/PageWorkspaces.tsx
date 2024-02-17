@@ -5,8 +5,8 @@ import serverFetchWorkspaces from '../shared/serverFetchWorkspaces'
 export const loader = async () => {
     const workspaces = await serverFetchWorkspaces()
 
-    if (workspaces.length > 0) {
-        return routerCreateRedirectResponse('workspaces')
+    if (workspaces.length === 0) {
+        throw routerCreateRedirectResponse('workspaces/first')
     }
 
     return workspaces

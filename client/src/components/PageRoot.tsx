@@ -2,23 +2,14 @@
 import { signOut } from 'firebase/auth'
 import valueIsNotEmptyString from 'shared/valueIsNotEmptyString'
 import valueIsClientInputError from 'shared/valueIsClientInputError'
-import routerCreateRedirectResponse from '../shared/routerCreateRedirectResponse'
 import firebaseGetAuth from '../shared/firebaseGetAuth'
 import { Outlet, useRouteError } from 'react-router-dom'
-import serverFetchWorkspaces from '../shared/serverFetchWorkspaces'
 import routerLoaderEnsuredFirebaseUser from '../shared/routerLoaderEnsuredFirebaseUser'
 
 export const loader = async () => {
-  console.log('PageRoot loader')
   await routerLoaderEnsuredFirebaseUser()
 
-  const workspaces = await serverFetchWorkspaces()
-
-  if (workspaces.length === 0) {
-    throw routerCreateRedirectResponse('workspaces/first')
-  }
-
-  return workspaces
+  return null
 }
 
 export const Component = () => (

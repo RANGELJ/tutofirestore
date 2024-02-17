@@ -6,8 +6,8 @@ import setWorkspaces from '../appStateReducers/setWorkspaces'
 
 const serverFetchWorkspaces = async () => {
   const fromStore = selectWorkspaces(appStateStore.getState())
-  console.log('fromStore', fromStore)
   if (fromStore) {
+    console.log('fromStore')
     return fromStore
   }
   const data = await serverFetch({
@@ -15,6 +15,7 @@ const serverFetchWorkspaces = async () => {
   })
   const workspacesFromServer = data as Workspace[]
   appStateStore.dispatch(setWorkspaces(workspacesFromServer))
+  console.log('From server')
   return workspacesFromServer
 }
 
